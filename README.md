@@ -107,6 +107,27 @@ Would delete 3 branches
  ( ) hotfix/urgent-security-patch            (committed 2 days ago)
 ```
 
+### Filter by Age
+```
+Only show branches older than a specific number of days:
+
+```bash
+# Only branches older than 30 days
+git-smart-clean --older-than 30
+
+# Only branches older than 90 days
+git-smart-clean --older-than 90 --dry-run
+
+# Only branches older than 6 months (180 days)
+git-smart-clean --older-than 180
+```
+
+**Useful for:**
+- Quarterly cleanup: `--older-than 90`
+- Yearly cleanup: `--older-than 365`
+- Find very old branches: `--older-than 180`
+```
+
 ## Development
 
 ```bash

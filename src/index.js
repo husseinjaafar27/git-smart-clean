@@ -108,7 +108,34 @@ export async function cleanBranches(options) {
         // Sort by date (oldest first)
         branchesWithInfo.sort((a, b) => a.date - b.date);
 
-        spinner.succeed(`Found ${chalk.bold(branchesWithInfo.length)} merged branches`);
+        // Filter by age if --older-than is specified
+        if (options.olderThan) {
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - options.olderThan);
+
+            const originalCount = branchesWithInfo.length;
+            branchesWithInfo.splice(0, branchesWithInfo.length,
+                ...branchesWithInfo.filter(b => b.date < cutoffDate)
+            );
+
+            const filteredCount = originalCount - branchesWithInfo.length;
+
+            if (filteredCount > 0) {
+                console.log(chalk.gray(`\nFiltered out ${filteredCount} branch(es) newer than ${options.olderThan} days\n`));
+            }
+        }
+
+        // Check if any branches remain after filtering
+        if (branchesWithInfo.length === 0) {
+            if (options.olderThan) {
+                spinner.succeed(`No merged branches older than ${options.olderThan} days!`);
+            } else {
+                spinner.succeed('No merged branches to clean up!');
+            }
+            return;
+        }
+
+        spinner.succeed(`Found ${chalk.bold(branchesWithInfo.length)} merged branches${options.olderThan ? ` older than ${options.olderThan} days` : ''}`);
 
         // Dry run mode
         if (options.dryRun) {

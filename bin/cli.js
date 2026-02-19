@@ -6,7 +6,7 @@ import { cleanBranches } from '../src/index.js';
 program
     .name('git-smart-clean')
     .description('Smart cleanup tool for merged git branches')
-    .version('1.0.0')
+    .version('1.1.0')
     .option('-d, --dry-run', 'Preview without deleting')
     .option('--older-than <days>', 'Only branches older than X days', parseInt)
     .option('--exclude <branches>', 'Branches to exclude (comma-separated)', 'main,master,develop')
